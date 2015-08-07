@@ -35,3 +35,15 @@ class NewsViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer_class()(news)
         return Response(serializer.data)
+
+    @decorators.detail_route(methods=['put'])
+    def remove_image(self, request, pk=None):
+        try:
+            news = News.objects.get(pk=pk)
+        except News.DoesNotExist:
+            raise Http404()
+
+        news.image.delete()
+
+        serializer = self.get_serializer_class()(news)
+        return Response(serializer.data)
