@@ -7,6 +7,8 @@ from django.http import Http404
 from rest_framework import serializers, viewsets, decorators
 from rest_framework.response import Response
 
+from xpassion_mag.models.feature import Feature
+
 
 class Article(models.Model):
     """An article published in an Issue"""
@@ -20,6 +22,7 @@ class Article(models.Model):
     # pdf = models.FileField(upload_to="pdf", blank=True, null=True)
     color = models.CharField(max_length=10)
     # image = models.ImageField(upload_to="img", blank=True, null=True)
+    feature = models.ForeignKey(Feature, blank=True, null=True)
     deleted = models.BooleanField(default=False)
 
     def __str__(self):
