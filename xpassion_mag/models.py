@@ -8,10 +8,10 @@ from rest_framework import serializers
 class Issue(models.Model):
     """An issue published by the 'binet'"""
     date = models.DateField()
-    published = models.BooleanField(default=True)
+    published = models.BooleanField(default=False)
     # front_cover = models.ImageField(upload_to="covers", blank=True, null=True)
     # back_cover = models.ImageField(upload_to="covers", blank=True, null=True)
-    number = models.IntegerField(default=0)
+    number = models.IntegerField(default=0, unique=True)
 
     def __str__(self):
         return "Numéro {nb} paru le ".format(nb=self.number) + self.date.strftime("%d/%m/%Y")
@@ -20,6 +20,7 @@ class Issue(models.Model):
 class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
+        read_only_fields = ('published', )
 
 
 class Theme(models.Model):
