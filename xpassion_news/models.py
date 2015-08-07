@@ -5,6 +5,9 @@ from rest_framework import serializers
 
 
 class News(models.Model):
+    class Meta:
+        verbose_name_plural = "News"
+    
     date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=254)
     message = models.TextField()
