@@ -50,6 +50,7 @@ class Article(models.Model):
     color = models.CharField(max_length=10)
     # image = models.ImageField(upload_to="img", blank=True, null=True)
     feature = models.ForeignKey(Feature, blank=True, null=True)
+    issue = models.ForeignKey(Issue)
     deleted = models.BooleanField(default=False)
 
     def __str__(self):
