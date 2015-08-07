@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'debug_toolbar', 
 
     'xpassion_mag', 
+    'xpassion_news', 
 )
 
 MIDDLEWARE_CLASSES = (

@@ -9,8 +9,8 @@ class Issue(models.Model):
     """An issue published by the 'binet'"""
     date = models.DateField()
     published = models.BooleanField(default=False)
-    # front_cover = models.ImageField(upload_to="covers", blank=True, null=True)
-    # back_cover = models.ImageField(upload_to="covers", blank=True, null=True)
+    # front_cover = models.ImageField(upload_to="img/covers", blank=True, null=True)
+    # back_cover = models.ImageField(upload_to="img/covers", blank=True, null=True)
     number = models.IntegerField(default=0, unique=True)
 
     def __str__(self):
@@ -56,7 +56,7 @@ class Feature(models.Model):
     title = models.CharField(max_length=254)
     intro_paragraph = models.TextField(blank=True)
     color = models.CharField(max_length=10)
-    # image = models.ImageField(upload_to="img", blank=True, null=True)
+    # image = models.ImageField(upload_to="img/feature", blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -78,7 +78,7 @@ class Article(models.Model):
     end_page = models.IntegerField(default=0)
     # pdf = models.FileField(upload_to="pdf", blank=True, null=True)
     color = models.CharField(max_length=10)
-    # image = models.ImageField(upload_to="img", blank=True, null=True)
+    # image = models.ImageField(upload_to="img/article", blank=True, null=True)
     feature = models.ForeignKey(Feature, blank=True, null=True)
     issue = models.ForeignKey(Issue)
     category = models.ForeignKey(Category)
