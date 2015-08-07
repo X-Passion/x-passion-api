@@ -55,6 +55,7 @@ INSTALLED_APPS = (
 
     'rest_framework', 
     'corsheaders',
+    'debug_toolbar', 
 
     'xpassion_mag', 
 )

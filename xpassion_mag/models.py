@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 from rest_framework import serializers
@@ -12,7 +14,7 @@ class Issue(models.Model):
     number = models.IntegerField(default=0)
 
     def __str__(self):
-        return "Numéro {nb} paru le {date}".format(nb=self.number, date=self.date)
+        return "Numéro {nb} paru le ".format(nb=self.number) + self.date.strftime("%d/%m/%Y")
 
 
 class IssueSerializer(serializers.ModelSerializer):
@@ -40,7 +42,6 @@ class Feature(models.Model):
     intro_paragraph = models.TextField(blank=True)
     color = models.CharField(max_length=10)
     # image = models.ImageField(upload_to="img", blank=True, null=True)
-    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -65,15 +66,19 @@ class Article(models.Model):
     # image = models.ImageField(upload_to="img", blank=True, null=True)
     feature = models.ForeignKey(Feature, blank=True, null=True)
     issue = models.ForeignKey(Issue)
-    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
+
+    def is_visible(self):
+        return self.issue.published
 
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
+
+    visible = serializers.BooleanField(source='is_visible', read_only=True)
 
     def validate(self, data):
         if data['begin_page'] > data['end_page']:

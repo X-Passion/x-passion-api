@@ -12,63 +12,11 @@ class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     search_fields = ('title', 'subtitle', 'author_firstname', 'author_lastname', )
 
-    @decorators.detail_route(methods=['put'])
-    def remove(self, request, pk=None):
-        try:
-            article = Article.objects.get(pk=pk)
-        except Article.DoesNotExist:
-            raise Http404()
-
-        article.deleted = True
-        article.save()
-
-        serializer = self.get_serializer_class()(article)
-        return Response(serializer.data)
-
-    @decorators.detail_route(methods=['put'])
-    def restore(self, request, pk=None):
-        try:
-            article = Article.objects.get(pk=pk)
-        except Article.DoesNotExist:
-            raise Http404()
-
-        article.deleted = False
-        article.save()
-
-        serializer = self.get_serializer_class()(article)
-        return Response(serializer.data)
-
 
 class FeatureViewSet(viewsets.ModelViewSet):
     queryset = Feature.objects.all()
     serializer_class = FeatureSerializer
     search_fields = ('title', )
-
-    @decorators.detail_route(methods=['put'])
-    def remove(self, request, pk=None):
-        try:
-            feature = Feature.objects.get(pk=pk)
-        except Feature.DoesNotExist:
-            raise Http404()
-
-        feature.deleted = True
-        feature.save()
-
-        serializer = self.get_serializer_class()(feature)
-        return Response(serializer.data)
-
-    @decorators.detail_route(methods=['put'])
-    def restore(self, request, pk=None):
-        try:
-            feature = Feature.objects.get(pk=pk)
-        except Feature.DoesNotExist:
-            raise Http404()
-
-        feature.deleted = False
-        feature.save()
-
-        serializer = self.get_serializer_class()(feature)
-        return Response(serializer.data)
 
 
 class IssueViewSet(viewsets.ModelViewSet):
