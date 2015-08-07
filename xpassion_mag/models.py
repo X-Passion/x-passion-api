@@ -20,6 +20,20 @@ class IssueSerializer(serializers.ModelSerializer):
         model = Issue
 
 
+class Theme(models.Model):
+    """Theme for Issues"""
+    name = models.CharField(max_length=254)
+    issue = models.ForeignKey(Issue)
+
+    def __str__(self):
+        return self.name
+
+
+class ThemeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Theme
+    
+
 class Feature(models.Model):
     """A group of articles dealing with the same topic"""
     title = models.CharField(max_length=254)
