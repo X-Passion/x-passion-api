@@ -7,10 +7,12 @@ from django.conf import settings
 from rest_framework import routers
 
 from xpassion_mag.models.article import ArticleViewSet
+from xpassion_mag.models.feature import FeatureViewSet
 
 router = routers.DefaultRouter()
 
 router.register(r'articles', ArticleViewSet)
+router.register(r'features', FeatureViewSet)
 
 urlpatterns = patterns(
     '',
