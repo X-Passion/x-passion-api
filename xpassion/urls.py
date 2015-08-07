@@ -6,8 +6,7 @@ from django.conf import settings
 
 from rest_framework import routers
 
-from xpassion_mag.models.article import ArticleViewSet
-from xpassion_mag.models.feature import FeatureViewSet
+from xpassion_mag.views import ArticleViewSet, FeatureViewSet
 
 router = routers.DefaultRouter()
 
