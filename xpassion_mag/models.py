@@ -3,6 +3,23 @@ from django.db import models
 from rest_framework import serializers
 
 
+class Issue(models.Model):
+    """An issue published by the 'binet'"""
+    date = models.DateField()
+    published = models.BooleanField(default=True)
+    # front_cover = models.ImageField(upload_to="covers", blank=True, null=True)
+    # back_cover = models.ImageField(upload_to="covers", blank=True, null=True)
+    number = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "Numéro {nb} paru le {date}".format(nb=self.number, date=self.date)
+
+
+class IssueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Issue
+
+
 class Feature(models.Model):
     """A group of articles dealing with the same topic"""
     title = models.CharField(max_length=254)

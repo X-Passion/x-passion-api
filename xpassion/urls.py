@@ -6,12 +6,13 @@ from django.conf import settings
 
 from rest_framework import routers
 
-from xpassion_mag.views import ArticleViewSet, FeatureViewSet
+from xpassion_mag.views import ArticleViewSet, FeatureViewSet, IssueViewSet
 
 router = routers.DefaultRouter()
 
 router.register(r'articles', ArticleViewSet)
 router.register(r'features', FeatureViewSet)
+router.register(r'issues', IssueViewSet)
 
 urlpatterns = patterns(
     '',
