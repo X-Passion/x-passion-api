@@ -35,6 +35,20 @@ class Theme(models.Model):
 class ThemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Theme
+
+
+class Category(models.Model):
+    """Category for Articles"""
+    name = models.CharField(max_length=254)
+    color = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.name
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
     
 
 class Feature(models.Model):
@@ -67,6 +81,7 @@ class Article(models.Model):
     # image = models.ImageField(upload_to="img", blank=True, null=True)
     feature = models.ForeignKey(Feature, blank=True, null=True)
     issue = models.ForeignKey(Issue)
+    category = models.ForeignKey(Category)
 
     def __str__(self):
         return self.title
