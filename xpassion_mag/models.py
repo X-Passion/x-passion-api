@@ -59,7 +59,7 @@ class Article(models.Model):
     color = models.CharField(max_length=10)
     image = models.ImageField(upload_to="img/articles", blank=True, null=True)
     feature = models.ForeignKey(Feature, blank=True, null=True)
-    issue = models.ForeignKey(Issue)
+    issue = models.ForeignKey(Issue, related_name="articles")
     category = models.ForeignKey(Category)
 
     def __str__(self):
@@ -79,15 +79,6 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
 
 
-class IssueSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Issue
-        read_only_fields = ('published', 'front_cover', 'back_cover', )
-        depth = 1
-        
-    themes = ThemeSerializer(many=True, read_only=True)
-
-
 class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feature
@@ -105,3 +96,16 @@ class ArticleSerializer(serializers.ModelSerializer):
         if data['begin_page'] > data['end_page']:
             raise serializers.ValidationError("end page must be greater or equal begin page")
         return data
+
+
+class IssueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Issue
+        read_only_fields = ('published', 'front_cover', 'back_cover', )
+        depth = 1
+        
+    themes = ThemeSerializer(many=True, read_only=True)
+
+
+class DetailIssueSerializer(IssueSerializer):
+    articles = ArticleSerializer(many=True)

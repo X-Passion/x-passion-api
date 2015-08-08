@@ -7,7 +7,7 @@ from rest_framework import viewsets, decorators
 from rest_framework.response import Response
 
 from xpassion_mag.models import Article, ArticleSerializer, Feature, FeatureSerializer, Category, CategorySerializer
-from xpassion_mag.models import Issue, IssueSerializer, Theme, ThemeSerializer
+from xpassion_mag.models import Issue, IssueSerializer, DetailIssueSerializer, Theme, ThemeSerializer
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
@@ -126,6 +126,11 @@ class FeatureViewSet(viewsets.ModelViewSet):
 class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = DetailIssueSerializer(instance)
+        return Response(serializer.data)
 
     @decorators.detail_route(methods=['put'])
     def unpublish(self, request, pk=None):
