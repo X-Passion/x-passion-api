@@ -23,7 +23,7 @@ class NewsViewSet(viewsets.ModelViewSet):
         news.deleted = True
         news.save()
 
-        serializer = self.get_serializer_class()(news)
+        serializer = self.get_serializer_class()(news, context={'request': request})
         return Response(serializer.data)
 
     @decorators.detail_route(methods=['put'])
@@ -36,7 +36,7 @@ class NewsViewSet(viewsets.ModelViewSet):
         news.deleted = False
         news.save()
 
-        serializer = self.get_serializer_class()(news)
+        serializer = self.get_serializer_class()(news, context={'request': request})
         return Response(serializer.data)
 
     @decorators.detail_route(methods=['put'])
