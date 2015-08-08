@@ -137,7 +137,7 @@ class IssueViewSet(viewsets.ModelViewSet):
         issue.published = False
         issue.save()
 
-        serializer = self.get_serializer_class()(issue)
+        serializer = self.get_serializer_class()(issue, context={'request': request})
         return Response(serializer.data)
 
     @decorators.detail_route(methods=['put'])
@@ -150,7 +150,7 @@ class IssueViewSet(viewsets.ModelViewSet):
         issue.published = True
         issue.save()
 
-        serializer = self.get_serializer_class()(issue)
+        serializer = self.get_serializer_class()(issue, context={'request': request})
         return Response(serializer.data)
 
     @decorators.detail_route(methods=['put'])
@@ -171,7 +171,7 @@ class IssueViewSet(viewsets.ModelViewSet):
         issue.front_cover = front_cover
         issue.save()
 
-        serializer = self.get_serializer_class()(issue)
+        serializer = self.get_serializer_class()(issue, context={'request': request})
         return Response(serializer.data)
 
     @decorators.detail_route(methods=['put'])
@@ -183,7 +183,7 @@ class IssueViewSet(viewsets.ModelViewSet):
 
         issue.front_cover.delete()
 
-        serializer = self.get_serializer_class()(issue)
+        serializer = self.get_serializer_class()(issue, context={'request': request})
         return Response(serializer.data)
 
     @decorators.detail_route(methods=['put'])
@@ -204,7 +204,7 @@ class IssueViewSet(viewsets.ModelViewSet):
         issue.back_cover = back_cover
         issue.save()
 
-        serializer = self.get_serializer_class()(issue)
+        serializer = self.get_serializer_class()(issue, context={'request': request})
         return Response(serializer.data)
 
     @decorators.detail_route(methods=['put'])
@@ -216,7 +216,7 @@ class IssueViewSet(viewsets.ModelViewSet):
 
         issue.back_cover.delete()
 
-        serializer = self.get_serializer_class()(issue)
+        serializer = self.get_serializer_class()(issue, context={'request': request})
         return Response(serializer.data)
 
 

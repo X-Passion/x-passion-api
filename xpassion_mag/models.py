@@ -17,24 +17,13 @@ class Issue(models.Model):
         return "Numéro {nb} paru le ".format(nb=self.number) + self.date.strftime("%d/%m/%Y")
 
 
-class IssueSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Issue
-        read_only_fields = ('published', 'front_cover', 'back_cover', )
-
-
 class Theme(models.Model):
     """Theme for Issues"""
     name = models.CharField(max_length=254)
-    issue = models.ForeignKey(Issue)
+    issue = models.ForeignKey(Issue, related_name='themes')
 
     def __str__(self):
         return self.name
-
-
-class ThemeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Theme
 
 
 class Category(models.Model):
@@ -44,11 +33,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
     
 
 class Feature(models.Model):
@@ -60,12 +44,6 @@ class Feature(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class FeatureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Feature
-        read_only_fields = ('image', )
 
 
 class Article(models.Model):
@@ -89,6 +67,31 @@ class Article(models.Model):
 
     def is_visible(self):
         return self.issue.published
+
+
+class ThemeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Theme
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+
+
+class IssueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Issue
+        read_only_fields = ('published', 'front_cover', 'back_cover', )
+        depth = 1
+        
+    themes = ThemeSerializer(many=True, read_only=True)
+
+
+class FeatureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feature
+        read_only_fields = ('image', )
 
 
 class ArticleSerializer(serializers.ModelSerializer):
