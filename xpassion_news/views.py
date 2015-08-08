@@ -1,4 +1,7 @@
+import re
+
 from django.http import Http404
+from django.utils import text
 
 from rest_framework import viewsets, decorators
 from rest_framework.response import Response
@@ -31,6 +34,27 @@ class NewsViewSet(viewsets.ModelViewSet):
             raise Http404()
 
         news.deleted = False
+        news.save()
+
+        serializer = self.get_serializer_class()(news)
+        return Response(serializer.data)
+
+    @decorators.detail_route(methods=['put'])
+    # @decorators.parser_classes(('MultiPartParser', ))
+    def upload_image(self, request, pk=None):
+        try:
+            news = News.objects.get(pk=pk)
+        except News.DoesNotExist:
+            raise Http404()
+
+        image = request.data['image']
+        extension = re.sub(r"(.*)\.(?P<ext>[a-zA-Z]+)$", r"\g<ext>", image.name) 
+        image.name = text.slugify(news.date.strftime("%Y%m%d%H%M") + " " + news.title) + "." + extension
+
+        if news.image:
+            news.image.delete()
+
+        news.image = image
         news.save()
 
         serializer = self.get_serializer_class()(news)

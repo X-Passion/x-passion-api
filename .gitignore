@@ -6,3 +6,4 @@ static/
 xpassion/settings/dev_server.py
 xpassion/wsgi.py
 /secret.key
+media/
