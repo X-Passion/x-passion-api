@@ -77,7 +77,7 @@ class Article(models.Model):
     intro_paragraph = models.TextField(blank=True)
     begin_page = models.IntegerField(default=0)
     end_page = models.IntegerField(default=0)
-    # pdf = models.FileField(upload_to="pdf", blank=True, null=True)
+    pdf = models.FileField(upload_to="pdf", blank=True, null=True)
     color = models.CharField(max_length=10)
     image = models.ImageField(upload_to="img/articles", blank=True, null=True)
     feature = models.ForeignKey(Feature, blank=True, null=True)

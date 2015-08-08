@@ -48,6 +48,41 @@ class ArticleViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer_class()(article)
         return Response(serializer.data)
 
+    @decorators.detail_route(methods=['put'])
+    # @decorators.parser_classes(('MultiPartParser', ))
+    def upload_pdf(self, request, pk=None):
+        try:
+            article = Article.objects.get(pk=pk)
+        except Article.DoesNotExist:
+            raise Http404()
+
+        pdf = request.data['pdf']
+        extension = re.sub(r"(.*)\.(?P<ext>[a-zA-Z]+)$", r"\g<ext>", pdf.name) 
+        if extension not in ["pdf", "PDF"]:
+            raise ValueError("this is not a pdf file")
+        pdf.name = text.slugify(article.title + " " + article.author_firstname + " " + article.author_lastname) + ".pdf"
+
+        if article.pdf:
+            article.pdf.delete()
+
+        article.pdf = pdf
+        article.save()
+
+        serializer = self.get_serializer_class()(article)
+        return Response(serializer.data)
+
+    @decorators.detail_route(methods=['put'])
+    def remove_pdf(self, request, pk=None):
+        try:
+            article = Article.objects.get(pk=pk)
+        except Article.DoesNotExist:
+            raise Http404()
+
+        article.pdf.delete()
+
+        serializer = self.get_serializer_class()(article)
+        return Response(serializer.data)
+
 
 class FeatureViewSet(viewsets.ModelViewSet):
     queryset = Feature.objects.all()
