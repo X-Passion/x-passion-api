@@ -8,22 +8,14 @@ from rest_framework import serializers
 class Issue(models.Model):
     """An issue published by the 'binet'"""
     date = models.DateField()
+    theme = models.CharField(max_length=254)
     published = models.BooleanField(default=False)
     front_cover = models.ImageField(upload_to="img/covers", blank=True, null=True)
     back_cover = models.ImageField(upload_to="img/covers", blank=True, null=True)
     number = models.IntegerField(default=0, unique=True)
 
     def __str__(self):
-        return "Numéro {nb} paru le ".format(nb=self.number) + self.date.strftime("%d/%m/%Y")
-
-
-class Theme(models.Model):
-    """Theme for Issues"""
-    name = models.CharField(max_length=254)
-    issue = models.ForeignKey(Issue, related_name='themes')
-
-    def __str__(self):
-        return self.name
+        return "Numéro {nb} paru le ".format(nb=self.number) + self.date.strftime("%d/%m/%Y") + " : {theme}".format(theme=self.theme)
 
 
 class Category(models.Model):
@@ -69,11 +61,6 @@ class Article(models.Model):
         return self.issue.published
 
 
-class ThemeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Theme
-
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -103,8 +90,6 @@ class IssueSerializer(serializers.ModelSerializer):
         model = Issue
         read_only_fields = ('published', 'front_cover', 'back_cover', )
         depth = 1
-        
-    themes = ThemeSerializer(many=True, read_only=True)
 
 
 class DetailIssueSerializer(IssueSerializer):

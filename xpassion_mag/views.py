@@ -7,7 +7,7 @@ from rest_framework import viewsets, decorators
 from rest_framework.response import Response
 
 from xpassion_mag.models import Article, ArticleSerializer, Feature, FeatureSerializer, Category, CategorySerializer
-from xpassion_mag.models import Issue, IssueSerializer, DetailIssueSerializer, Theme, ThemeSerializer
+from xpassion_mag.models import Issue, IssueSerializer, DetailIssueSerializer
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
@@ -223,11 +223,6 @@ class IssueViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer_class()(issue, context={'request': request})
         return Response(serializer.data)
-
-
-class ThemeViewSet(viewsets.ModelViewSet):
-    queryset = Theme.objects.all()
-    serializer_class = ThemeSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
