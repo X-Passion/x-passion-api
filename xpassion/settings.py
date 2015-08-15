@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'xpassion_mag', 
     'xpassion_news', 
     'xpassion_comment', 
+    'xpassion_image', 
 )
 
 MIDDLEWARE_CLASSES = (
