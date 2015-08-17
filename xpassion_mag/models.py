@@ -69,7 +69,7 @@ class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feature
 
-    image = ImageSerializer()
+    image = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all(), allow_null=True)
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -77,7 +77,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
 
     visible = serializers.BooleanField(source='is_visible', read_only=True)
-    image = ImageSerializer()
+    image = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all(), allow_null=True)
 
     def validate(self, data):
         if data['begin_page'] > data['end_page']:
@@ -91,8 +91,4 @@ class IssueSerializer(serializers.ModelSerializer):
         read_only_fields = ('published', )
         depth = 1
 
-    front_cover = ImageSerializer()
-
-
-class DetailIssueSerializer(IssueSerializer):
-    articles = ArticleSerializer(many=True)
+    front_cover = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all(), allow_null=True)
