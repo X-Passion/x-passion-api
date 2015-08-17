@@ -9,6 +9,7 @@ from rest_framework import routers
 from xpassion_mag.views import ArticleViewSet, FeatureViewSet, IssueViewSet, CategoryViewSet
 from xpassion_news.views import NewsViewSet
 from xpassion_comment.views import CommentViewSet
+from xpassion_image.views import ImageViewSet
 
 router = routers.DefaultRouter()
 
@@ -18,6 +19,7 @@ router.register(r'issues', IssueViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'news', NewsViewSet)
 router.register(r'comments', CommentViewSet)
+router.register(r'images', ImageViewSet)
 
 urlpatterns = patterns(
     '',
