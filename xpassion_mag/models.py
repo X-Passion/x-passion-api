@@ -4,14 +4,15 @@ from django.db import models
 
 from rest_framework import serializers
 
+from xpassion_image.models import Image, ImageSerializer
+
 
 class Issue(models.Model):
     """An issue published by the 'binet'"""
     date = models.DateField()
     theme = models.CharField(max_length=254)
     published = models.BooleanField(default=False)
-    front_cover = models.ImageField(upload_to="img/covers", blank=True, null=True)
-    back_cover = models.ImageField(upload_to="img/covers", blank=True, null=True)
+    front_cover = models.ForeignKey(Image, blank=True, null=True)
     number = models.IntegerField(default=0, unique=True)
 
     def __str__(self):
@@ -31,8 +32,7 @@ class Feature(models.Model):
     """A group of articles dealing with the same topic"""
     title = models.CharField(max_length=254)
     intro_paragraph = models.TextField(blank=True)
-    color = models.CharField(max_length=10)
-    image = models.ImageField(upload_to="img/features", blank=True, null=True)
+    image = models.ForeignKey(Image, blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -48,8 +48,7 @@ class Article(models.Model):
     begin_page = models.IntegerField(default=0)
     end_page = models.IntegerField(default=0)
     pdf = models.FileField(upload_to="pdf", blank=True, null=True)
-    color = models.CharField(max_length=10)
-    image = models.ImageField(upload_to="img/articles", blank=True, null=True)
+    image = models.ForeignKey(Image, blank=True, null=True)
     feature = models.ForeignKey(Feature, blank=True, null=True)
     issue = models.ForeignKey(Issue, related_name="articles")
     category = models.ForeignKey(Category)
@@ -69,15 +68,16 @@ class CategorySerializer(serializers.ModelSerializer):
 class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feature
-        read_only_fields = ('image', )
+
+    image = ImageSerializer()
 
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        read_only_fields = ('image', )
 
     visible = serializers.BooleanField(source='is_visible', read_only=True)
+    image = ImageSerializer()
 
     def validate(self, data):
         if data['begin_page'] > data['end_page']:
@@ -88,8 +88,11 @@ class ArticleSerializer(serializers.ModelSerializer):
 class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
-        read_only_fields = ('published', 'front_cover', 'back_cover', )
+        read_only_fields = ('published', )
         depth = 1
+
+    front_cover = ImageSerializer()
+    back_cover = ImageSerializer()
 
 
 class DetailIssueSerializer(IssueSerializer):

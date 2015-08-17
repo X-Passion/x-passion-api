@@ -57,10 +57,10 @@ INSTALLED_APPS = (
     'corsheaders',
     'debug_toolbar', 
 
+    'xpassion_image', 
     'xpassion_mag', 
     'xpassion_news', 
     'xpassion_comment', 
-    'xpassion_image', 
 )
 
 MIDDLEWARE_CLASSES = (

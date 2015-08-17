@@ -17,39 +17,6 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     @decorators.detail_route(methods=['put'])
     # @decorators.parser_classes(('MultiPartParser', ))
-    def upload_image(self, request, pk=None):
-        try:
-            article = Article.objects.get(pk=pk)
-        except Article.DoesNotExist:
-            raise Http404()
-
-        image = request.data['image']
-        extension = re.sub(r"(.*)\.(?P<ext>[a-zA-Z]+)$", r"\g<ext>", image.name) 
-        image.name = text.slugify(article.title + " " + article.author_firstname + " " + article.author_lastname) + "." + extension
-
-        if article.image:
-            article.image.delete()
-
-        article.image = image
-        article.save()
-
-        serializer = self.get_serializer_class()(article)
-        return Response(serializer.data)
-
-    @decorators.detail_route(methods=['put'])
-    def remove_image(self, request, pk=None):
-        try:
-            article = Article.objects.get(pk=pk)
-        except Article.DoesNotExist:
-            raise Http404()
-
-        article.image.delete()
-
-        serializer = self.get_serializer_class()(article)
-        return Response(serializer.data)
-
-    @decorators.detail_route(methods=['put'])
-    # @decorators.parser_classes(('MultiPartParser', ))
     def upload_pdf(self, request, pk=None):
         try:
             article = Article.objects.get(pk=pk)
@@ -89,39 +56,6 @@ class FeatureViewSet(viewsets.ModelViewSet):
     serializer_class = FeatureSerializer
     search_fields = ('title', )
 
-    @decorators.detail_route(methods=['put'])
-    # @decorators.parser_classes(('MultiPartParser', ))
-    def upload_image(self, request, pk=None):
-        try:
-            feature = Feature.objects.get(pk=pk)
-        except Feature.DoesNotExist:
-            raise Http404()
-
-        image = request.data['image']
-        extension = re.sub(r"(.*)\.(?P<ext>[a-zA-Z]+)$", r"\g<ext>", image.name) 
-        image.name = text.slugify(feature.title) + "." + extension
-
-        if feature.image:
-            feature.image.delete()
-
-        feature.image = image
-        feature.save()
-
-        serializer = self.get_serializer_class()(feature)
-        return Response(serializer.data)
-
-    @decorators.detail_route(methods=['put'])
-    def remove_image(self, request, pk=None):
-        try:
-            feature = Feature.objects.get(pk=pk)
-        except Feature.DoesNotExist:
-            raise Http404()
-
-        feature.image.delete()
-
-        serializer = self.get_serializer_class()(feature)
-        return Response(serializer.data)
-
 
 class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
@@ -154,72 +88,6 @@ class IssueViewSet(viewsets.ModelViewSet):
 
         issue.published = True
         issue.save()
-
-        serializer = self.get_serializer_class()(issue, context={'request': request})
-        return Response(serializer.data)
-
-    @decorators.detail_route(methods=['put'])
-    # @decorators.parser_classes(('MultiPartParser', ))
-    def upload_front(self, request, pk=None):
-        try:
-            issue = Issue.objects.get(pk=pk)
-        except Issue.DoesNotExist:
-            raise Http404()
-
-        front_cover = request.data['front_cover']
-        extension = re.sub(r"(.*)\.(?P<ext>[a-zA-Z]+)$", r"\g<ext>", front_cover.name) 
-        front_cover.name = text.slugify("{0:0>3}".format(issue.number) + "-front-cover") + "." + extension
-
-        if issue.front_cover:
-            issue.front_cover.delete()
-
-        issue.front_cover = front_cover
-        issue.save()
-
-        serializer = self.get_serializer_class()(issue, context={'request': request})
-        return Response(serializer.data)
-
-    @decorators.detail_route(methods=['put'])
-    def remove_front(self, request, pk=None):
-        try:
-            issue = Issue.objects.get(pk=pk)
-        except Issue.DoesNotExist:
-            raise Http404()
-
-        issue.front_cover.delete()
-
-        serializer = self.get_serializer_class()(issue, context={'request': request})
-        return Response(serializer.data)
-
-    @decorators.detail_route(methods=['put'])
-    # @decorators.parser_classes(('MultiPartParser', ))
-    def upload_back(self, request, pk=None):
-        try:
-            issue = Issue.objects.get(pk=pk)
-        except Issue.DoesNotExist:
-            raise Http404()
-
-        back_cover = request.data['back_cover']
-        extension = re.sub(r"(.*)\.(?P<ext>[a-zA-Z]+)$", r"\g<ext>", back_cover.name) 
-        back_cover.name = text.slugify("{0:0>3}".format(issue.number) + "-back-cover") + "." + extension
-
-        if issue.back_cover:
-            issue.back_cover.delete()
-
-        issue.back_cover = back_cover
-        issue.save()
-
-        serializer = self.get_serializer_class()(issue, context={'request': request})
-        return Response(serializer.data)
-
-    @decorators.detail_route(methods=['put'])
-    def remove_back(self, request, pk=None):
-        try:
-            issue = Issue.objects.get(pk=pk)
-        except Issue.DoesNotExist:
-            raise Http404()
-
-        issue.back_cover.delete()
 
         serializer = self.get_serializer_class()(issue, context={'request': request})
         return Response(serializer.data)
