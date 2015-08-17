@@ -92,7 +92,6 @@ class IssueSerializer(serializers.ModelSerializer):
         depth = 1
 
     front_cover = ImageSerializer()
-    back_cover = ImageSerializer()
 
 
 class DetailIssueSerializer(IssueSerializer):
