@@ -2,12 +2,13 @@ import re
 
 from django.http import Http404
 from django.utils import text
+from django.db.models import Prefetch
 
 from rest_framework import viewsets, decorators
 from rest_framework.response import Response
 
 from xpassion_mag.models import Article, ArticleSerializer, Feature, FeatureSerializer, Category, CategorySerializer, Issue, IssueSerializer
-
+from xpassion_image.models import ImageSerializer
 
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
@@ -15,7 +16,6 @@ class ArticleViewSet(viewsets.ModelViewSet):
     search_fields = ('title', 'subtitle', 'author_firstname', 'author_lastname', )
 
     @decorators.detail_route(methods=['put'])
-    # @decorators.parser_classes(('MultiPartParser', ))
     def upload_pdf(self, request, pk=None):
         try:
             article = Article.objects.get(pk=pk)
@@ -26,7 +26,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         extension = re.sub(r"(.*)\.(?P<ext>[a-zA-Z]+)$", r"\g<ext>", pdf.name) 
         if extension not in ["pdf", "PDF"]:
             raise ValueError("this is not a pdf file")
-        pdf.name = text.slugify(article.title + " " + article.author_firstname + " " + article.author_lastname) + ".pdf"
+        pdf.name = text.slugify(article.author_lastname + " " + article.author_firstname + " " + article.title) + ".pdf"
 
         if article.pdf:
             article.pdf.delete()
@@ -59,6 +59,18 @@ class FeatureViewSet(viewsets.ModelViewSet):
 class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
+
+    def retrieve(self, request, pk=None):
+        try:
+            qs = Issue.objects.select_related('front_cover')
+            qs = qs.prefetch_related(Prefetch('articles', queryset=Article.objects.select_related('image')))
+            issue = qs.get(pk=pk)
+        except Issue.DoesNotExist:
+            raise Http404()
+
+        serializer = self.get_serializer_class()(issue, context={'request': request})
+        return Response(serializer.data)
+        
 
     @decorators.detail_route(methods=['put'])
     def unpublish(self, request, pk=None):

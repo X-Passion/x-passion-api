@@ -91,4 +91,4 @@ class IssueSerializer(serializers.ModelSerializer):
         read_only_fields = ('published', )
         depth = 1
 
-    front_cover = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all(), allow_null=True)
+    articles = ArticleSerializer(many=True, read_only=True)
