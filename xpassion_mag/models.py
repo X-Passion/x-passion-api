@@ -21,7 +21,7 @@ class Issue(models.Model):
 
 class Category(models.Model):
     """Category for Articles"""
-    name = models.CharField(max_length=254)
+    name = models.CharField(max_length=254, unique=True)
     color = models.CharField(max_length=10)
 
     def __str__(self):
@@ -33,6 +33,7 @@ class Feature(models.Model):
     title = models.CharField(max_length=254)
     intro_paragraph = models.TextField(blank=True)
     image = models.ForeignKey(Image, blank=True, null=True)
+    issue = models.ForeignKey(Issue, related_name="features")
 
     def __str__(self):
         return self.title
@@ -43,8 +44,8 @@ class Article(models.Model):
     title = models.CharField(max_length=254)
     author_lastname = models.CharField(max_length=254)
     author_firstname = models.CharField(max_length=254)
-    subtitle = models.TextField(blank=True)
     intro_paragraph = models.TextField(blank=True)
+    excerpt = models.TextField(blank=True)
     begin_page = models.IntegerField(default=0)
     end_page = models.IntegerField(default=0)
     pdf = models.FileField(upload_to="pdf", blank=True, null=True)
@@ -76,13 +77,21 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
 
+
     visible = serializers.BooleanField(source='is_visible', read_only=True)
     image = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all(), allow_null=True)
+    category = CategorySerializer(read_only=True)
+    category_id = serializers.IntegerField(write_only=True)
 
     def validate(self, data):
         if data['begin_page'] > data['end_page']:
             raise serializers.ValidationError("end page must be greater or equal begin page")
         return data
+
+    def create(self, validated_data):
+        validated_data['category'] = Category.objects.get(pk=1)
+        validated_data.pop("category_id", None)
+        return Article.objects.create(**validated_data)
 
 
 class IssueSerializer(serializers.ModelSerializer):
@@ -92,3 +101,4 @@ class IssueSerializer(serializers.ModelSerializer):
         depth = 1
 
     articles = ArticleSerializer(many=True, read_only=True)
+    features = FeatureSerializer(many=True, read_only=True)

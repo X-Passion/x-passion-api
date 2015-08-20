@@ -63,7 +63,10 @@ class IssueViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         try:
             qs = Issue.objects.select_related('front_cover')
-            qs = qs.prefetch_related(Prefetch('articles', queryset=Article.objects.select_related('image')))
+            qs = qs.prefetch_related(
+                Prefetch('features', queryset=Feature.objects.select_related('image')),
+                Prefetch('articles', queryset=Article.objects.select_related('image', 'category')),
+            )
             issue = qs.get(pk=pk)
         except Issue.DoesNotExist:
             raise Http404()
