@@ -23,7 +23,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             raise Http404()
 
         pdf = request.data['pdf']
-        extension = re.sub(r"(.*)\.(?P<ext>[a-zA-Z]+)$", r"\g<ext>", pdf.name) 
+        extension = re.sub(r"(.*)\.(?P<ext>[a-zA-Z]+)$", r"\g<ext>", pdf.name)
         if extension not in ["pdf", "PDF"]:
             raise ValueError("this is not a pdf file")
         pdf.name = text.slugify(article.author_lastname + " " + article.author_firstname + " " + article.title) + ".pdf"
@@ -72,8 +72,9 @@ class IssueViewSet(viewsets.ModelViewSet):
             raise Http404()
 
         serializer = self.get_serializer_class()(issue, context={'request': request})
+
         return Response(serializer.data)
-        
+
 
     @decorators.detail_route(methods=['put'])
     def unpublish(self, request, pk=None):

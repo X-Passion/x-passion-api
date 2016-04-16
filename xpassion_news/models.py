@@ -9,7 +9,7 @@ from xpassion_image.models import Image, ImageSerializer
 class News(models.Model):
     class Meta:
         verbose_name_plural = "News"
-    
+
     date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=254)
     message = models.TextField()
@@ -26,4 +26,4 @@ class NewsSerializer(serializers.ModelSerializer):
         model = News
 
     author = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
-    image = ImageSerializer()
+    image = ImageSerializer(required=False)

@@ -29,6 +29,7 @@ class Image(models.Model):
 
     file = models.ImageField(upload_to=target_folder, max_length=254)
     caption = models.CharField(max_length=254)
+    subcaption = models.CharField(max_length=254, blank=True, null=True)
     platal_only = models.BooleanField(default=True)
     type = models.CharField(max_length=10, choices=IMAGE_TYPES, default='covers')
 

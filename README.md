@@ -4,7 +4,7 @@
 
 ### Installation
 
-Python3 is required. pip is highly recommanded !
+Python3 is required. pip is highly recommended !
 
 Run the following commands in a shell :
 ```

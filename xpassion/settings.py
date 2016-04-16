@@ -40,7 +40,7 @@ except NameError:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -53,14 +53,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework', 
+    'rest_framework',
     'corsheaders',
-    'debug_toolbar', 
+    'debug_toolbar',
 
-    'xpassion_image', 
-    'xpassion_mag', 
-    'xpassion_news', 
-    'xpassion_comment', 
+    'xpassion_image',
+    'xpassion_mag',
+    'xpassion_news',
+    'xpassion_comment',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -162,5 +162,3 @@ JWT_AUTH = {
 # CORS headers
 
 CORS_ORIGIN_ALLOW_ALL = True
-
-
