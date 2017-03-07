@@ -5,6 +5,7 @@ from django.utils import text
 
 from rest_framework import serializers
 
+from image_cropping import ImageRatioField
 
 def target_folder(instance, filename):
     path = 'img/' + instance.type + '/'
@@ -32,6 +33,8 @@ class Image(models.Model):
     subcaption = models.CharField(max_length=254, blank=True, null=True)
     platal_only = models.BooleanField(default=True)
     type = models.CharField(max_length=10, choices=IMAGE_TYPES, default='covers')
+    big_cropping = ImageRatioField('file', '829x1168')
+    small_cropping = ImageRatioField('file', '282x400')
 
     objects = ImageManager
 

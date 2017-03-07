@@ -10,6 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
+# thumbnails settings
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
@@ -56,6 +63,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'corsheaders',
     'debug_toolbar',
+    'image_cropping',
+    'easy_thumbnails',
 
     'xpassion_image',
     'xpassion_mag',
@@ -73,6 +82,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'xpassion.urls'

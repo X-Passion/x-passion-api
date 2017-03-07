@@ -2,12 +2,14 @@
 import datetime
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
 from rest_framework import serializers
 
 from xpassion_image.models import Image, ImageSerializer
 
 
+#@python_2_unicode_compatible
 class Issue(models.Model):
     """An issue published by the 'binet'"""
     date = models.DateField()
@@ -20,6 +22,7 @@ class Issue(models.Model):
         return "Numéro {nb} paru le ".format(nb=self.number) + self.date.strftime("%d/%m/%Y") + " : {theme}".format(theme=self.theme)
 
 
+#@python_2_unicode_compatible
 class Category(models.Model):
     """Category for Articles"""
     name = models.CharField(max_length=254, unique=True)
@@ -29,6 +32,7 @@ class Category(models.Model):
         return self.name
 
 
+#@python_2_unicode_compatible
 class Feature(models.Model):
     """A group of articles dealing with the same topic"""
     title = models.CharField(max_length=254)
@@ -41,6 +45,7 @@ class Feature(models.Model):
         return self.title
 
 
+#@python_2_unicode_compatible
 class Author(models.Model):
     """Authors of articles"""
     class Meta:
@@ -53,7 +58,7 @@ class Author(models.Model):
     def __str__(self):
         return self.firstname + " " + self.lastname
 
-
+#@python_2_unicode_compatible
 class Article(models.Model):
     """An article published in an Issue"""
     title = models.CharField(max_length=254)
@@ -69,6 +74,7 @@ class Article(models.Model):
     feature = models.ForeignKey(Feature, blank=True, null=True)
     issue = models.ForeignKey(Issue, related_name="articles")
     category = models.ForeignKey(Category)
+
 
     def __str__(self):
         return self.title

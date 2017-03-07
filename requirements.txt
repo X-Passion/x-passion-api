@@ -15,3 +15,5 @@ coverage
 Pillow
 
 mysqlclient
+django-image-cropping
+easy-thumbnails
