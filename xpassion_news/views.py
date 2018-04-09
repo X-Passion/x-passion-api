@@ -3,12 +3,19 @@ from django.http import Http404
 from rest_framework import viewsets, decorators
 from rest_framework.response import Response
 
-from xpassion_news.models import News, NewsSerializer
+from hitcount.models import HitCount
+from hitcount.views import HitCountMixin
 
+from xpassion_news.models import News, NewsSerializer
 
 class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
+    hit_count = HitCount.objects.get_for_object(News.objects.first())
+
+    def list(self, request):
+        HitCountMixin.hit_count(request, self.hit_count)
+        return super().list(request)
 
     @decorators.detail_route(methods=['put'])
     def remove(self, request, pk=None):

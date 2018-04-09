@@ -1,0 +1,5 @@
+*__pycache__
+*.swp
+.git*
+secret.key
+README.md

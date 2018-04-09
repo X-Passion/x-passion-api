@@ -65,6 +65,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'image_cropping',
     'easy_thumbnails',
+    'hitcount',
 
     'xpassion_image',
     'xpassion_mag',
@@ -172,3 +173,7 @@ JWT_AUTH = {
 # CORS headers
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# hitcount
+HITCOUNT_KEEP_HIT_ACTIVE = { 'days': 1 }
+HITCOUNT_HITS_PER_IP_LIMIT = 1
