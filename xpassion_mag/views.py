@@ -6,6 +6,7 @@ from django.db.models import Prefetch
 
 from rest_framework import viewsets, decorators
 from rest_framework.response import Response
+from rest_framework.generics import get_object_or_404
 
 from xpassion_mag.models import Article, ArticleSerializer, Feature, FeatureSerializer, Category, CategorySerializer, Issue, IssueSerializer
 from xpassion_image.models import ImageSerializer
@@ -61,15 +62,12 @@ class IssueViewSet(viewsets.ModelViewSet):
     serializer_class = IssueSerializer
 
     def retrieve(self, request, pk=None):
-        try:
-            qs = Issue.objects.select_related('front_cover')
-            qs = qs.prefetch_related(
-                Prefetch('features', queryset=Feature.objects.select_related('image')),
-                Prefetch('articles', queryset=Article.objects.select_related('image', 'category')),
-            )
-            issue = qs.get(pk=pk)
-        except Issue.DoesNotExist:
-            raise Http404()
+        qs = Issue.objects.select_related('front_cover')
+        qs = qs.prefetch_related(
+            Prefetch('features', queryset=Feature.objects.select_related('image')),
+            Prefetch('articles', queryset=Article.objects.select_related('image', 'category')),
+        )
+        issue = get_object_or_404(qs, pk=pk)
 
         serializer = self.get_serializer_class()(issue, context={'request': request})
 
