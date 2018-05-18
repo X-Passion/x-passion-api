@@ -66,11 +66,13 @@ INSTALLED_APPS = (
     'image_cropping',
     'easy_thumbnails',
     'hitcount',
+    'django_cas_ng',
 
     'xpassion_image',
     'xpassion_mag',
     'xpassion_news',
     'xpassion_comment',
+    'xpassion_auth',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,6 +86,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas_ng.backends.CASBackend',
 )
 
 ROOT_URLCONF = 'xpassion.urls'
@@ -152,7 +159,7 @@ REST_FRAMEWORK = {
         'rest_framework.serializers.HyperlinkedModelSerializer',
 
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
@@ -164,6 +171,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter'
     )
 }
+
 
 import datetime
 JWT_AUTH = {
@@ -177,3 +185,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 # hitcount
 HITCOUNT_KEEP_HIT_ACTIVE = { 'days': 1 }
 HITCOUNT_HITS_PER_IP_LIMIT = 1
+
+# BRCAS
+CAS_SERVER_URL = 'https://cas.binets.fr/'
+CAS_USERNAME_ATTRIBUTE = 'user'

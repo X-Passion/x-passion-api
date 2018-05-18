@@ -26,6 +26,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api-token-auth/', 'rest_framework_jwt.views.obtain_jwt_token'),
+    url(r'^api-brcas-token-auth/', 'xpassion_auth.views.brcas_token'),
     url(r'^', include(router.urls))
 )
 
