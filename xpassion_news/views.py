@@ -11,10 +11,17 @@ from xpassion_news.models import News, NewsSerializer
 class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
-    hit_count = HitCount.objects.get_for_object(News.objects.first())
+    counted_object = News.objects.first();
+    hit_count = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if(self.counted_object is not None):
+            self.hit_count = HitCount.objects.get_for_object(self.counted_object)
 
     def list(self, request):
-        HitCountMixin.hit_count(request, self.hit_count)
+        if(self.hit_count is not None):
+            HitCountMixin.hit_count(request, self.hit_count)
         return super().list(request)
 
     @decorators.detail_route(methods=['put'])

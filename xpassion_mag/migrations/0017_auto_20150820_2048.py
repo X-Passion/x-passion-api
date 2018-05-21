@@ -19,7 +19,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='feature',
             name='issue',
-            field=models.ForeignKey(related_name='features', to='xpassion_mag.Issue', default=1),
+            field=models.ForeignKey(related_name='features',
+                on_delete=models.CASCADE, to='xpassion_mag.Issue', default=1),
             preserve_default=False,
         ),
     ]

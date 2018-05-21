@@ -15,6 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='news',
             name='image',
-            field=models.ForeignKey(blank=True, to='xpassion_image.Image', null=True),
+            field=models.ForeignKey(blank=True, to='xpassion_image.Image',
+                on_delete=models.PROTECT, null=True),
         ),
     ]

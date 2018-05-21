@@ -20,7 +20,8 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=254)),
                 ('message', models.TextField()),
                 ('deleted', models.BooleanField(default=False)),
-                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                    on_delete=models.CASCADE)),
             ],
         ),
     ]

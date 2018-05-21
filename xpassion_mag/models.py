@@ -15,7 +15,7 @@ class Issue(models.Model):
     date = models.DateField()
     theme = models.CharField(max_length=254)
     published = models.BooleanField(default=False)
-    front_cover = models.ForeignKey(Image, blank=True, null=True)
+    front_cover = models.ForeignKey(Image, models.PROTECT, blank=True, null=True)
     number = models.IntegerField(default=0, unique=True)
 
     def __str__(self):
@@ -37,8 +37,8 @@ class Feature(models.Model):
     """A group of articles dealing with the same topic"""
     title = models.CharField(max_length=254)
     intro_paragraph = models.TextField(blank=True)
-    image = models.ForeignKey(Image, blank=True, null=True)
-    issue = models.ForeignKey(Issue, related_name="features")
+    image = models.ForeignKey(Image, models.PROTECT, blank=True, null=True)
+    issue = models.ForeignKey(Issue, models.CASCADE, related_name="features")
     color = models.CharField(max_length=10, default="#ffffff")
 
     def __str__(self):
@@ -70,10 +70,10 @@ class Article(models.Model):
     begin_page = models.IntegerField(default=0)
     end_page = models.IntegerField(default=0)
     pdf = models.FileField(upload_to="pdf", blank=True, null=True)
-    image = models.ForeignKey(Image, blank=True, null=True)
-    feature = models.ForeignKey(Feature, blank=True, null=True)
-    issue = models.ForeignKey(Issue, related_name="articles")
-    category = models.ForeignKey(Category)
+    image = models.ForeignKey(Image, models.PROTECT, blank=True, null=True)
+    feature = models.ForeignKey(Feature, models.SET_NULL, blank=True, null=True)
+    issue = models.ForeignKey(Issue, models.CASCADE, related_name="articles")
+    category = models.ForeignKey(Category, models.PROTECT)
 
 
     def __str__(self):
@@ -86,11 +86,13 @@ class Article(models.Model):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = '__all__'
 
 
 class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feature
+        fields = '__all__'
 
     image = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all(), allow_null=True)
 
@@ -98,11 +100,13 @@ class FeatureSerializer(serializers.ModelSerializer):
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
+        fields = '__all__'
 
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
+        fields = '__all__'
 
 
     visible = serializers.BooleanField(source='is_visible', read_only=True)
@@ -127,6 +131,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
+        fields = '__all__'
         read_only_fields = ('published', )
         depth = 1
 

@@ -16,7 +16,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('name', models.CharField(max_length=254)),
-                ('issue', models.ForeignKey(to='xpassion_mag.Issue')),
+                ('issue', models.ForeignKey(to='xpassion_mag.Issue',
+                    on_delete=models.CASCADE)),
             ],
         ),
     ]

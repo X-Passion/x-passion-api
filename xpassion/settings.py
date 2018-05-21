@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'django_filters',
     'corsheaders',
     'debug_toolbar',
     'image_cropping',
@@ -75,13 +76,12 @@ INSTALLED_APPS = (
     'xpassion_auth',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -90,7 +90,7 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'django_cas_ng.backends.CASBackend',
+    'xpassion_auth.backends.BRCASBackend',
 )
 
 ROOT_URLCONF = 'xpassion.urls'
@@ -167,8 +167,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',  # TODO: remove
     ),
     'DEFAULT_FILTER_BACKENDS': (
-        'rest_framework.filters.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter'
+        'django_filters.rest_framework.DjangoFilterBackend',
+        #'django_filters.rest_framework.SearchFilter'
     )
 }
 
@@ -189,3 +189,5 @@ HITCOUNT_HITS_PER_IP_LIMIT = 1
 # BRCAS
 CAS_SERVER_URL = 'https://cas.binets.fr/'
 CAS_USERNAME_ATTRIBUTE = 'user'
+CAS_IGNORE_REFERER = True
+CAS_REDIRECT_URL = 'https://x-passion.binets.fr/'

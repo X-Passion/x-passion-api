@@ -15,16 +15,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='image',
-            field=models.ForeignKey(null=True, to='xpassion_image.Image', blank=True),
+            field=models.ForeignKey(null=True, to='xpassion_image.Image',
+                on_delete=models.PROTECT, blank=True),
         ),
         migrations.AddField(
             model_name='feature',
             name='image',
-            field=models.ForeignKey(null=True, to='xpassion_image.Image', blank=True),
+            field=models.ForeignKey(null=True, to='xpassion_image.Image',
+                on_delete=models.PROTECT, blank=True),
         ),
         migrations.AddField(
             model_name='issue',
             name='front_cover',
-            field=models.ForeignKey(null=True, to='xpassion_image.Image', blank=True),
+            field=models.ForeignKey(null=True, to='xpassion_image.Image',
+                on_delete=models.PROTECT, blank=True),
         ),
     ]

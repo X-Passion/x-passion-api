@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='feature',
-            field=models.ForeignKey(blank=True, to='xpassion_mag.Feature', null=True),
+            field=models.ForeignKey(blank=True, to='xpassion_mag.Feature',
+                null=True, on_delete=models.SET_NULL),
         ),
     ]

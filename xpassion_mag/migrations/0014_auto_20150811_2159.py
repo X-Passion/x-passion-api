@@ -24,7 +24,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='article',
             name='issue',
-            field=models.ForeignKey(to='xpassion_mag.Issue', related_name='articles'),
+            field=models.ForeignKey(to='xpassion_mag.Issue',
+                on_delete=models.CASCADE, related_name='articles'),
         ),
         migrations.DeleteModel(
             name='Theme',

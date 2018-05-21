@@ -1,16 +1,17 @@
-from django.shortcuts import render
-from cas import CASClient
-
-import django_cas_ng.backends
 import django.contrib.auth
-from django_cas_ng.utils import get_cas_client, get_service_url
+
+from django_cas_ng.utils import (
+        get_cas_client,
+        get_service_url,
+        get_redirect_url )
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import render
 
 import rest_framework_jwt
-import warnings
 
 def brcas_token(request):
     service_url = get_service_url(request)
+    redirect_url = get_redirect_url(request)
     client = get_cas_client(service_url=service_url, request=request)
     ticket = request.GET.get('ticket')
     if ticket:
@@ -20,7 +21,9 @@ def brcas_token(request):
             jwt_encode_handler = rest_framework_jwt.settings.api_settings.JWT_ENCODE_HANDLER
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
-            # TODO : un hard-code redirect_url
-            return render(request, "storer.html", context = { "token" : token, "redirect_url" : "https://x-passion.binets.fr/" })
+            return render(request, "storer.html", context = {
+                "token" : token,
+                "redirect_url" : redirect_url
+                })
     raise PermissionDenied('BR CAS login failed.')
 

@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='category',
-            field=models.ForeignKey(to='xpassion_mag.Category', default=1),
+            field=models.ForeignKey(to='xpassion_mag.Category',
+                on_delete=models.PROTECT, default=1),
             preserve_default=False,
         ),
     ]

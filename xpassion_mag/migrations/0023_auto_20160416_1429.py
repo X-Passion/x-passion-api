@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='article',
             name='author',
-            field=models.ForeignKey(related_name='articles', to='xpassion_mag.Author'),
+            field=models.ForeignKey(related_name='articles',
+                on_delete=models.CASCADE, to='xpassion_mag.Author'),
         ),
     ]

@@ -13,8 +13,8 @@ class News(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=254)
     message = models.TextField()
-    image = models.ForeignKey(Image, blank=True, null=True)
-    author = models.ForeignKey(User)
+    image = models.ForeignKey(Image, models.PROTECT, blank=True, null=True)
+    author = models.ForeignKey(User, models.CASCADE)
     deleted = models.BooleanField(default=False)
 
     def __str__(self):
@@ -24,6 +24,7 @@ class News(models.Model):
 class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
+        fields = '__all__'
 
     author = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     image = ImageSerializer(required=False)
