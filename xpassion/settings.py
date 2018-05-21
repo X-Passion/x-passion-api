@@ -46,6 +46,24 @@ except NameError:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': '/var/log/xpassion/debug.log',
+                },
+            },
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'WARN',
+                'propagate': True,
+                },
+            },
+        }
 
 ALLOWED_HOSTS = ['*']
 
