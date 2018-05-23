@@ -15,7 +15,6 @@ class BRCASBackend(django_cas_ng.backends.CASBackend):
 def add_to_group_or_create(user, groupname):
     group,_ = Group.objects.get_or_create(name=groupname)
     user.groups.add(group)
-    user.save()
 
 @receiver(django_cas_ng.signals.cas_user_authenticated)
 def set_groups(sender, **kwargs):

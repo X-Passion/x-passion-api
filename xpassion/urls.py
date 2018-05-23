@@ -12,6 +12,7 @@ from xpassion_mag.views import ArticleViewSet, FeatureViewSet, IssueViewSet, Cat
 from xpassion_news.views import NewsViewSet
 from xpassion_comment.views import CommentViewSet
 from xpassion_image.views import ImageViewSet
+from xpassion_survey.views import SurveyViewSet, PageFormViewSet
 import xpassion_auth.views
 
 import django.contrib.auth.models
@@ -27,6 +28,8 @@ router.register(r'categories', CategoryViewSet)
 router.register(r'news', NewsViewSet)
 router.register(r'comments', CommentViewSet)
 router.register(r'images', ImageViewSet)
+router.register(r'survey', SurveyViewSet)
+router.register(r'page_form', PageFormViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

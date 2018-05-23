@@ -1,0 +1,3 @@
+[submodule "src/django-jsonschema"]
+	path = src/django-jsonschema
+	url = https://github.com/X-Passion/django-jsonschema

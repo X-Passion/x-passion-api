@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'xpassion_news',
     'xpassion_comment',
     'xpassion_auth',
+    'xpassion_survey',
 )
 
 MIDDLEWARE = (
